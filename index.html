@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vault Platform Technical Foundations — Learner Guide</title>
+<meta name="description" content="Five days, sixteen modules, one capstone. Everything you'll be able to do by the end of Vault Platform Technical Foundations.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0C0D0F;
+    --near:#17191C;
+    --white:#FFFFFF;
+    --mist:#F2F3F2;
+    --line:#E2E4E1;
+    --line-dk:#2C2F33;
+    --grey:#6C757B;
+    --grey-dk:#9AA2A7;
+    --signal:#E8541F;
+    --signal-dk:#FF6B33;
+    --amber:#8A7A3E;
+    --amber-bg:#F7F2E0;
+    --bar-h:52px;
+  }
+
+  *{box-sizing:border-box;}
+
+  html{scroll-behavior:smooth;scroll-padding-top:calc(var(--bar-h) + 16px);}
+
+  body{
+    margin:0;
+    background:var(--white);
+    color:var(--black);
+    font-family:"Manrope",system-ui,-apple-system,sans-serif;
+    font-size:17px;
+    line-height:1.55;
+    font-weight:400;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+
+  :focus-visible{outline:2.5px solid var(--signal);outline-offset:4px;border-radius:2px;}
+
+  .wrap{max-width:1140px;margin:0 auto;padding:0 32px;}
+
+  /* ================================================================ hero */
+
+  .hero{
+    background:var(--black);
+    color:var(--white);
+    padding:132px 0 76px;
+    position:relative;
+    overflow:hidden;
+  }
+
+  .hero .kicker{
+    font-size:14px;
+    font-weight:600;
+    letter-spacing:.14em;
+    color:var(--signal-dk);
+    margin:0 0 30px;
+  }
+
+  .hero h1{
+    font-weight:800;
+    font-size:clamp(2.9rem,8.2vw,6.4rem);
+    line-height:.96;
+    letter-spacing:-.035em;
+    margin:0 0 34px;
+    max-width:13ch;
+  }
+
+  .hero .lede{
+    font-weight:300;
+    font-size:clamp(1.15rem,2.4vw,1.62rem);
+    line-height:1.42;
+    color:#C8CDD0;
+    max-width:47ch;
+    margin:0 0 76px;
+  }
+
+  .meta{
+    position:relative;
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    border-top:1px solid #343A3F;
+  }
+  .meta::before{
+    content:"";
+    position:absolute;
+    top:-1px;left:0;
+    width:48px;height:2px;
+    background:var(--signal-dk);
+  }
+  .meta > div{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    padding:30px 38px 2px;
+  }
+  .meta > div:first-child{padding-left:0;}
+  .meta > div:last-child{padding-right:0;}
+  .meta > div + div::before{
+    content:"";
+    position:absolute;
+    left:0;top:30px;bottom:4px;
+    width:1px;
+    background:linear-gradient(to bottom,#343A3F 0%,#343A3F 42%,rgba(52,58,63,0) 100%);
+  }
+  .meta dt{
+    font-size:11.5px;
+    font-weight:700;
+    letter-spacing:.17em;
+    text-transform:uppercase;
+    color:#8C949A;
+    margin:0 0 11px;
+  }
+  .meta dd{
+    margin:0;
+    display:flex;
+    flex-direction:column;
+    flex:1 1 auto;
+    font-weight:700;
+    font-size:clamp(1.12rem,1.75vw,1.38rem);
+    letter-spacing:-.018em;
+    line-height:1.22;
+    text-wrap:balance;
+  }
+  .meta dd em{
+    margin-top:auto;
+    padding-top:12px;
+    font-style:normal;
+    font-weight:400;
+    font-size:14.5px;
+    line-height:1.4;
+    color:var(--grey-dk);
+    letter-spacing:0;
+  }
+
+  @media (max-width:980px){
+    .meta > div{padding:26px 22px 2px;}
+    .meta > div + div::before{top:26px;}
+  }
+
+  .hero .kicker,.hero h1,.hero .lede,.hero .meta{
+    opacity:0;
+    transform:translateY(16px);
+    animation:rise .78s cubic-bezier(.17,.67,.3,1) forwards;
+  }
+  .hero h1{animation-delay:.07s;}
+  .hero .lede{animation-delay:.15s;}
+  .hero .meta{animation-delay:.23s;}
+  @keyframes rise{to{opacity:1;transform:none;}}
+
+  /* ============================================================ progress */
+
+  .bar{
+    position:sticky;
+    top:0;
+    z-index:40;
+    height:var(--bar-h);
+    background:rgba(255,255,255,.88);
+    backdrop-filter:saturate(1.6) blur(14px);
+    -webkit-backdrop-filter:saturate(1.6) blur(14px);
+    border-bottom:1px solid var(--line);
+  }
+  .bar .wrap{
+    height:100%;
+    display:flex;
+    align-items:center;
+    gap:20px;
+  }
+  .bar .count{
+    font-weight:700;
+    font-size:15px;
+    letter-spacing:-.01em;
+    font-variant-numeric:tabular-nums;
+    white-space:nowrap;
+  }
+  .bar .count span{color:var(--grey);font-weight:500;}
+  .track-line{
+    flex:1;
+    height:3px;
+    background:var(--line);
+    border-radius:99px;
+    overflow:hidden;
+    min-width:60px;
+  }
+  .track-fill{
+    height:100%;
+    width:0%;
+    background:var(--signal);
+    border-radius:99px;
+    transition:width .45s cubic-bezier(.17,.67,.3,1);
+  }
+  .bar button{
+    background:none;border:0;padding:0;
+    font:inherit;font-size:14px;font-weight:500;
+    color:var(--grey);cursor:pointer;
+    white-space:nowrap;
+  }
+  .bar button:hover{color:var(--signal);}
+
+  /* =============================================================== track */
+
+  .track{padding:84px 0 20px;}
+  .track.alt{background:var(--mist);}
+
+  .track-head{
+    display:flex;
+    align-items:flex-start;
+    gap:26px;
+    margin-bottom:46px;
+  }
+  .track-head .idx{
+    font-weight:200;
+    font-size:clamp(3rem,7vw,5rem);
+    line-height:.82;
+    letter-spacing:-.05em;
+    color:var(--signal);
+    font-variant-numeric:tabular-nums;
+  }
+  .track-head h2{
+    font-weight:700;
+    font-size:clamp(1.7rem,3.6vw,2.5rem);
+    letter-spacing:-.03em;
+    line-height:1.08;
+    margin:0 0 8px;
+    max-width:18ch;
+  }
+  .track-head p{
+    margin:0;
+    color:var(--grey);
+    font-size:15px;
+    font-weight:500;
+    font-variant-numeric:tabular-nums;
+  }
+
+  .cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(330px,1fr));
+    gap:20px;
+    padding-bottom:84px;
+  }
+
+  .card{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:30px 30px 28px;
+    display:flex;
+    flex-direction:column;
+    transition:border-color .2s ease,background .2s ease;
+  }
+  .track.alt .card{border-color:#DADCD8;}
+
+  .card-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    margin-bottom:16px;
+  }
+  .card-no{
+    font-size:12.5px;
+    font-weight:700;
+    letter-spacing:.1em;
+    color:var(--grey);
+    font-variant-numeric:tabular-nums;
+  }
+
+  .tick{
+    appearance:none;-webkit-appearance:none;
+    flex:0 0 auto;
+    width:26px;height:26px;
+    border:1.5px solid #C3C8C5;
+    border-radius:50%;
+    background:transparent;
+    cursor:pointer;
+    display:grid;place-content:center;
+    transition:background .18s ease,border-color .18s ease,transform .18s cubic-bezier(.3,1.4,.5,1);
+  }
+  .tick:hover{border-color:var(--signal);}
+  .tick:checked{background:var(--signal);border-color:var(--signal);}
+  .tick:checked::after{
+    content:"";
+    width:11px;height:6px;
+    border-left:2px solid #fff;border-bottom:2px solid #fff;
+    transform:rotate(-45deg) translate(1px,-1.5px);
+  }
+  .tick:active{transform:scale(.9);}
+
+  .card h3{
+    font-weight:700;
+    font-size:1.28rem;
+    letter-spacing:-.022em;
+    line-height:1.22;
+    margin:0 0 16px;
+  }
+
+  .card ul{list-style:none;margin:0 0 auto;padding:0;}
+  .card li{
+    position:relative;
+    padding-left:19px;
+    margin-bottom:10px;
+    font-size:15.3px;
+    line-height:1.5;
+    color:#464E53;
+  }
+  .card li::before{
+    content:"";
+    position:absolute;left:0;top:.63em;
+    width:7px;height:7px;
+    border-radius:50%;
+    background:#D3D7D4;
+  }
+
+  .card.done{background:#FAFBFA;border-color:#D6DAD7;}
+  .card.done h3{color:var(--grey);}
+  .card.done li{color:#8D9499;}
+
+  .gap{
+    margin-top:22px;
+    padding-top:16px;
+    border-top:1px dashed #D8D5C2;
+    display:flex;
+    align-items:baseline;
+    gap:9px;
+    font-size:13px;
+    line-height:1.45;
+    color:var(--amber);
+  }
+  .gap b{
+    font-weight:700;
+    background:var(--amber-bg);
+    padding:1px 7px;
+    border-radius:4px;
+    white-space:nowrap;
+  }
+
+  /* ============================================================ capstone */
+
+  .capstone{
+    background:var(--black);
+    color:var(--white);
+    padding:112px 0 104px;
+  }
+  .capstone .idx{
+    font-weight:200;
+    font-size:clamp(3rem,7vw,5rem);
+    line-height:.82;
+    letter-spacing:-.05em;
+    color:var(--signal-dk);
+    display:block;
+    margin-bottom:22px;
+  }
+  .capstone h2{
+    font-weight:800;
+    font-size:clamp(2.2rem,6vw,4.1rem);
+    letter-spacing:-.035em;
+    line-height:1;
+    margin:0 0 30px;
+  }
+  .capstone p{
+    font-weight:300;
+    font-size:clamp(1.05rem,2.1vw,1.38rem);
+    line-height:1.52;
+    color:#C8CDD0;
+    max-width:56ch;
+    margin:0 0 22px;
+  }
+  .cap-tick{
+    display:inline-flex;
+    align-items:center;
+    gap:15px;
+    margin-top:30px;
+    padding:17px 28px 17px 22px;
+    border:1px solid var(--line-dk);
+    border-radius:99px;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    transition:border-color .2s ease,background .2s ease;
+  }
+  .cap-tick:hover{border-color:var(--signal-dk);}
+  .cap-tick .tick{border-color:#5A6267;}
+  .cap-tick .tick:checked{background:var(--signal-dk);border-color:var(--signal-dk);}
+
+  /* ============================================================= finish */
+
+  .finish{
+    background:var(--signal);
+    color:#fff;
+    text-align:center;
+    padding:0;
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .5s cubic-bezier(.17,.67,.3,1),padding .5s ease;
+  }
+  .finish.on{max-height:320px;padding:56px 0;}
+  .finish h2{
+    font-weight:800;
+    font-size:clamp(1.7rem,4vw,2.6rem);
+    letter-spacing:-.03em;
+    margin:0 0 10px;
+  }
+  .finish p{margin:0;font-weight:400;font-size:1.05rem;color:#FFE3D7;}
+
+  /* =========================================================== colophon */
+
+  .colophon{
+    background:var(--mist);
+    padding:66px 0 72px;
+    font-size:15px;
+    color:#50585D;
+  }
+  .colophon h2{
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:.12em;
+    color:var(--black);
+    margin:0 0 20px;
+  }
+  .colophon p{max-width:70ch;margin:0 0 14px;}
+  .colophon .note{
+    display:flex;
+    align-items:flex-start;
+    gap:11px;
+  }
+  .colophon .swatch{
+    flex:0 0 auto;
+    margin-top:4px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:18px;height:18px;
+    border-radius:5px;
+    background:var(--amber-bg);
+    border:1.5px dashed #BFAF73;
+  }
+  .colophon .swatch::after{
+    content:"";
+    width:7px;height:1.5px;border-radius:1px;
+    background:var(--amber);
+  }
+
+  /* ========================================================= responsive */
+
+  @media (max-width:760px){
+    body{font-size:16px;}
+    .wrap{padding:0 22px;}
+    .hero{padding:86px 0 56px;}
+    .hero .lede{margin-bottom:50px;}
+    .meta{grid-template-columns:1fr;}
+    .meta > div{padding:20px 0 20px;}
+    .meta > div:first-child{padding-top:24px;}
+    .meta > div + div::before{
+      left:0;right:0;top:0;bottom:auto;
+      width:auto;height:1px;
+      background:#2C2F33;
+    }
+    .meta dd em{margin-top:0;padding-top:7px;}
+    .track{padding:60px 0 0;}
+    .track-head{gap:18px;margin-bottom:34px;}
+    .cards{gap:16px;padding-bottom:60px;}
+    .card{padding:24px 22px 22px;border-radius:14px;}
+    .capstone{padding:76px 0 72px;}
+    .bar .wrap{gap:14px;}
+    .bar button{display:none;}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto;}
+    *,*::before,*::after{animation:none !important;transition:none !important;}
+    .hero .kicker,.hero h1,.hero .lede,.hero .meta{opacity:1;transform:none;}
+    .finish{transition:none;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="kicker">Veeva Education Services</p>
+    <h1>Vault Platform Technical Foundations</h1>
+    <p class="lede">
+      Manage content and data as the single source of truth on Veeva Vault. The entry point for
+      technical learners: architecture, objects, documents, lifecycles, workflows and security.
+    </p>
+    <dl class="meta">
+      <div>
+        <dt>LENGTH</dt>
+        <dd>5 days<em>Instructor-led, or self-paced</em></dd>
+      </div>
+      <div>
+        <dt>LEADS TO</dt>
+        <dd>Vault Platform Administrator<em>Certification exam on completion</em></dd>
+      </div>
+      <div>
+        <dt>TO FOLLOW ALONG</dt>
+        <dd>Basic software systems<em>Plus system administration or IT experience</em></dd>
+      </div>
+    </dl>
+  </div>
+</header>
+
+<div class="bar">
+  <div class="wrap">
+    <p class="count"><strong id="cDone">0</strong><span id="cTotal"> of 17 done</span></p>
+    <div class="track-line"><div class="track-fill" id="fill"></div></div>
+    <button type="button" id="reset">Clear</button>
+  </div>
+</div>
+
+<main id="main"></main>
+
+<section class="finish" id="finish" aria-live="polite">
+  <div class="wrap">
+    <h2>That's all five days.</h2>
+    <p>Sixteen modules and the capstone. Time to book the certification exam.</p>
+  </div>
+</section>
+
+<footer class="colophon">
+  <div class="wrap">
+    <h2>ABOUT THIS GUIDE</h2>
+    <p>
+      Every module name and outcome here comes from the published Vault Platform Technical
+      Foundations data sheet. Nothing has been added, rewritten or estimated.
+    </p>
+    <p class="note">
+      <span class="swatch" aria-hidden="true"></span> marks something the data sheet doesn't say. It gives one overall
+      length — five days — and no breakdown per module, so this guide leaves that blank rather than
+      guessing.
+    </p>
+    <p>
+      Modules are grouped into four tracks for readability. The data sheet lists them in two columns
+      without stating a teaching order, so confirm the running order with your instructor.
+    </p>
+    <p>Ticks last for this browser session and clear when you reload.</p>
+  </div>
+</footer>
+
+<script>
+/* ------------------------------------------------------------------
+   Source of truth: the published Vault Platform Technical Foundations
+   data sheet. Module names and outcomes are verbatim. Where the sheet
+   is silent — per-module length — the card says so instead of guessing.
+------------------------------------------------------------------- */
+
+const TRACKS = [
+  {
+    id:"orientation", name:"Getting oriented", alt:false,
+    modules:[
+      { title:"Discover Veeva Vault Platform", outcomes:[
+        "Navigate Veeva Vault's cloud-based data and content management platform to access and manage information",
+        "Explain Vault's core components and its role as a secure content and data management system"]},
+      { title:"User Administration", outcomes:[
+        "Manage users by distinguishing between Vault and Domain attributes",
+        "Configure base access using security profiles, permission sets, and groups",
+        "Enable and assign delegate access"]},
+      { title:"Working with and Managing Vault Data", outcomes:[
+        "Perform core data actions including creating, editing, sharing, and deleting object records",
+        "Identify record relationships and analyze activity using Audit Trails"]}
+    ]
+  },
+  {
+    id:"objects", name:"Objects", alt:true,
+    modules:[
+      { title:"Object Configuration", outcomes:[
+        "Build custom objects and configure metadata fields using various data types",
+        "Define object relationships, validation rules, and picklist dependencies"]},
+      { title:"Object Layouts", outcomes:[
+        "Design user interfaces by modifying standard layouts and configuring custom layout profiles",
+        "Create layout rules to conditionally control the display of fields and sections"]},
+      { title:"Configuring Vault Object Permissions", outcomes:[
+        "Manage object and field-level permissions while identifying license type restrictions",
+        "Evaluate how lifecycle roles impact record-level security"]},
+      { title:"Object Lifecycles", outcomes:[
+        "Design and implement object lifecycles with states and transitions aligned to business processes",
+        "Add custom lifecycle roles and configure role-based permissions for each state"]},
+      { title:"Object Workflows", outcomes:[
+        "Implement multi-step workflows by configuring tasks, notifications, and decision steps",
+        "Test workflow logic in a sandbox environment"]},
+      { title:"Object Access Controls", outcomes:[
+        "Implement record-level security using Custom and Matching Sharing Rules",
+        "Verify record access functionality through testing of sharing settings"]}
+    ]
+  },
+  {
+    id:"documents", name:"Documents", alt:false,
+    modules:[
+      { title:"Document Management", outcomes:[
+        "Manage document versions, templates, and overlays within the document library",
+        "Execute bulk document actions and manage content via the Vault Cart"]},
+      { title:"Document Configuration", outcomes:[
+        "Configure document types, subtypes, and classifications to organize content",
+        "Create document fields and field dependencies to capture required metadata"]},
+      { title:"Document Lifecycles and Workflows", outcomes:[
+        "Design and manage document lifecycles and review/approval workflows to automate business needs",
+        "Test configuration in a sandbox environment"]},
+      { title:"Document Permissions and Document Role Assignments", outcomes:[
+        "Modify document and field-level permissions for specific roles",
+        "Determine and apply the best access control method to assign users to lifecycle roles"]}
+    ]
+  },
+  {
+    id:"operations", name:"Running and maintaining your Vault", alt:true,
+    modules:[
+      { title:"Data Insights and Reporting", outcomes:[
+        "Create and configure reports and dashboards using appropriate filters and groupings",
+        "Analyze the Vault data model and audit logs to monitor system activity"]},
+      { title:"Troubleshooting in your Vault", outcomes:[
+        "Identify and resolve usability and access issues using a structured four-step process",
+        "Leverage audit logs and Veeva Help resources to resolve configuration errors"]},
+      { title:"Vault Environment Management", outcomes:[
+        "Learn how to migrate configuration changes between environments using deployment packages (VPKs)",
+        "Analyze Vault releases and use configuration and compare reports to validate environmental setups"]}
+    ]
+  }
+];
+
+const esc = s => s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
+const TOTAL = TRACKS.reduce((n,t)=>n+t.modules.length,0) + 1;
+const state = new Set();   /* session only — swap for localStorage on a published copy */
+
+const main = document.getElementById("main");
+let n = 0;
+
+TRACKS.forEach((track, ti) => {
+  const sec = document.createElement("section");
+  sec.className = "track" + (track.alt ? " alt" : "");
+  sec.id = track.id;
+
+  const head =
+    '<div class="track-head">' +
+      '<div class="idx">' + String(ti + 1).padStart(2, "0") + '</div>' +
+      '<div><h2>' + esc(track.name) + '</h2>' +
+      '<p><span data-tally="' + track.id + '">0</span> of ' + track.modules.length + ' done</p></div>' +
+    '</div>';
+
+  const cards = track.modules.map(mod => {
+    n += 1;
+    const key = track.id + "-" + n;
+    return '<article class="card" data-key="' + key + '" data-track="' + track.id + '">' +
+      '<div class="card-top">' +
+        '<span class="card-no">MODULE ' + String(n).padStart(2, "0") + '</span>' +
+        '<input class="tick" type="checkbox" aria-label="Mark ' + esc(mod.title) + ' as done">' +
+      '</div>' +
+      '<h3>' + esc(mod.title) + '</h3>' +
+      '<ul>' + mod.outcomes.map(o => '<li>' + esc(o) + '</li>').join("") + '</ul>' +
+      '<p class="gap"><b>Length</b> not stated in the data sheet — ask on day one.</p>' +
+    '</article>';
+  }).join("");
+
+  sec.innerHTML = '<div class="wrap">' + head + '<div class="cards">' + cards + '</div></div>';
+  main.appendChild(sec);
+});
+
+/* -------------------------------------------------------- capstone */
+
+const cap = document.createElement("section");
+cap.className = "capstone";
+cap.id = "capstone";
+cap.innerHTML =
+  '<div class="wrap">' +
+    '<span class="idx">05</span>' +
+    '<h2>The Capstone</h2>' +
+    '<p>Leverage stakeholder requirements from a fictitious company to enhance your Vault\'s ' +
+    'functionality. You\'ll apply everything from the course — document types, fields, lifecycles, ' +
+    'workflows, objects, reports and security profiles — to reinforce concepts for use in your ' +
+    'everyday job.</p>' +
+    '<p>This practical, real-world challenge confirms your proficiency in managing and adapting a ' +
+    'Veeva Vault environment.</p>' +
+    '<label class="cap-tick">' +
+      '<input class="tick" type="checkbox" id="capTick" aria-label="Mark the capstone as submitted">' +
+      'Capstone submitted' +
+    '</label>' +
+  '</div>';
+main.appendChild(cap);
+
+/* --------------------------------------------------------- wiring */
+
+const cDone  = document.getElementById("cDone");
+const cTotal = document.getElementById("cTotal");
+const fill   = document.getElementById("fill");
+const finish = document.getElementById("finish");
+
+cTotal.textContent = " of " + TOTAL + " done";
+
+function refresh(){
+  cDone.textContent = state.size;
+  fill.style.width = (state.size / TOTAL * 100) + "%";
+  finish.classList.toggle("on", state.size === TOTAL);
+
+  TRACKS.forEach(t => {
+    const done = [...state].filter(k => k.startsWith(t.id + "-")).length;
+    document.querySelector('[data-tally="' + t.id + '"]').textContent = done;
+  });
+}
+
+document.addEventListener("change", e => {
+  const box = e.target;
+  if (!box.classList || !box.classList.contains("tick")) return;
+
+  const card = box.closest(".card");
+  const key  = card ? card.dataset.key : "capstone";
+
+  if (box.checked) state.add(key); else state.delete(key);
+  if (card) card.classList.toggle("done", box.checked);
+
+  refresh();
+});
+
+document.getElementById("reset").addEventListener("click", () => {
+  state.clear();
+  document.querySelectorAll(".tick").forEach(b => { b.checked = false; });
+  document.querySelectorAll(".card.done").forEach(c => c.classList.remove("done"));
+  refresh();
+});
+
+refresh();
+</script>
+</body>
+</html>
